@@ -1,14 +1,7 @@
 # AI Legal Office
 
-Private source repository for the AI Legal Office dashboard.
+Private staff dashboard prototype for an advocate's office.
 
-## Current status
-- Responsive dashboard prototype
-- Dummy data only
-- Google Sheets remains the planned backend
-- No client login
-- No real client data
-- Hosting/authentication will be added separately
+Includes a responsive Home dashboard, Cases, Hearings, Tasks and Clients views, quick actions, demo forms, and a post-hearing workflow that holds client notification until advocate confirmation.
 
-## Security note
-This repository is private. Do not place real client records, phone numbers, case documents, API keys, or provider secrets in the repository.
+This deployment uses dummy data. Google Sheets, WhatsApp, SMS, voice and AI automation are planned for the next integration phase.
