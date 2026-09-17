@@ -1,7 +1,19 @@
 # AI Legal Office
 
-Private staff dashboard prototype for an advocate's office.
+Private staff dashboard for an advocate's office.
 
-Includes a responsive Home dashboard, Cases, Hearings, Tasks and Clients views, quick actions, demo forms, and a post-hearing workflow that holds client notification until advocate confirmation.
+## Current deployment
+- Responsive advocate-friendly dashboard
+- Home, Cases, Hearings, Tasks and Clients
+- Safe case closure: cases are marked Closed rather than permanently deleted
+- Closure reason and closure timestamp fields aligned with the Google Sheets Cases backend
+- Closed cases can be filtered and reopened
+- Post-hearing update held for advocate confirmation
+- No client login
+- Dummy data only
 
-This deployment uses dummy data. Google Sheets, WhatsApp, SMS, voice and AI automation are planned for the next integration phase.
+## Backend alignment
+The Google Sheets `Cases` tab uses `Status`, `Closed At`, `Closure Reason`, and `Updated At`. The website uses the same case lifecycle concept. Permanent deletion is intentionally not exposed in the staff UI so a legal record is not accidentally erased.
+
+## Next integration phase
+Connect the website to Google Sheets, then add WhatsApp/SMS/voice reminders, AI assistant, audit logs, and the advocate confirmation workflow.
