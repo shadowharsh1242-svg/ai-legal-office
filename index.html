@@ -5,132 +5,150 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Case Diary</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fa;color:#172033}
-header{background:#172033;color:#fff;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-h1{margin:0;font-size:24px}.wrap{max-width:1250px;margin:0 auto;padding:20px}
-.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #dfe4ea;border-radius:12px;padding:12px;margin-bottom:16px}
-button,input{font:inherit}button{border:0;border-radius:8px;padding:10px 14px;cursor:pointer;background:#172033;color:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#172033}
+header{background:#172033;color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:24px}.wrap{max-width:1250px;margin:auto;padding:20px}
+.toolbar,.card{background:#fff;border:1px solid #dfe4ea;border-radius:12px}
+.toolbar{padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button,input{font:inherit}button{border:0;border-radius:8px;padding:10px 14px;background:#172033;color:#fff;cursor:pointer}
 button.secondary{background:#eef1f5;color:#172033;border:1px solid #d7dde5}button.danger{background:#b42318}
-input[type=date],input[type=text]{border:1px solid #cbd3dd;border-radius:8px;padding:10px;background:#fff}
-.datebox{display:flex;align-items:center;gap:8px}.selected{font-weight:700;min-width:160px}
-.card{background:#fff;border:1px solid #dfe4ea;border-radius:12px;overflow:hidden}
-.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}
-th,td{padding:13px 12px;border-bottom:1px solid #e8ebef;text-align:left;vertical-align:middle}
-th{background:#f1f4f7;font-size:13px;text-transform:uppercase;letter-spacing:.03em}
-tr:last-child td{border-bottom:0}.empty{text-align:center;padding:42px;color:#687386}
-.actions{display:flex;gap:6px}.small{padding:7px 10px;font-size:13px}
-#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);align-items:center;justify-content:center;padding:18px}
-.modal-card{background:#fff;width:min(620px,100%);border-radius:14px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.modal-card h2{margin:0 0 16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:700}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-.note{font-size:13px;color:#687386;margin:10px 0 0}
-@media(max-width:700px){header{padding:15px}.wrap{padding:12px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.selected{min-width:auto}}
+button.small{padding:7px 9px;font-size:13px}input{border:1px solid #cbd3dd;border-radius:8px;padding:10px;background:#fff}
+.datebox{display:flex;align-items:center;gap:8px}.selected{font-weight:700}.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:980px}th,td{padding:13px 12px;border-bottom:1px solid #e8ebef;text-align:left}
+th{background:#f1f4f7;font-size:13px;text-transform:uppercase}tr:last-child td{border-bottom:0}
+.empty{text-align:center;padding:42px;color:#687386}.actions{display:flex;gap:6px;flex-wrap:wrap}
+#modal{display:none;position:fixed;inset:0;background:#0006;align-items:center;justify-content:center;padding:18px}
+.modal-card{background:#fff;width:min(620px,100%);border-radius:14px;padding:20px}
+.modal-card h2{margin:0 0 16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:13px;font-weight:bold}.full{grid-column:1/-1}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.note{font-size:13px;color:#687386}
+@media(max-width:700px){.wrap{padding:12px}.grid{grid-template-columns:1fr}.full{grid-column:auto}}
 </style>
 </head>
 <body>
-<header><h1>Case Diary</h1><button id="addTop">Add New Case</button></header>
+<header><h1>Case Diary</h1><button id="addBtn">Add New Case</button></header>
 <main class="wrap">
 <div class="toolbar">
 <button class="secondary" id="prev">Previous Day</button>
 <button class="secondary" id="today">Today</button>
 <button class="secondary" id="next">Next Day</button>
-<div class="datebox"><input id="datePicker" type="date"><span id="dateLabel" class="selected"></span></div>
+<input id="picker" type="date"><span id="label" class="selected"></span>
 </div>
-<div class="card">
-<div class="table-wrap">
-<table>
-<thead><tr><th>Previous Date</th><th>Case No.</th><th>Court</th><th>Party Name</th><th>Position / Stage</th><th>Next Date</th><th>Action</th></tr></thead>
-<tbody id="rows"></tbody>
-</table>
-</div>
-</div>
-<p class="note">This is the simple working diary. Cases are saved on this device.</p>
+<div class="card"><div class="table-wrap">
+<table><thead><tr>
+<th>Previous Date</th><th>Case No.</th><th>Court</th><th>Party Name</th><th>Position / Stage</th><th>Next Date</th><th>Action</th>
+</tr></thead><tbody id="rows"></tbody></table>
+</div></div>
+<p class="note">After each hearing, use “Set New Date”. The new date is automatically added to that case and the case will appear on that future date. Old hearing dates stay in the case history.</p>
 </main>
 
-<div id="modal">
-<div class="modal-card">
-<h2>Add New Case</h2>
-<form id="caseForm">
-<div class="grid">
-<div class="field"><label>Previous Date</label><input id="previousDate" type="date"></div>
-<div class="field"><label>Next Date</label><input id="nextDate" type="date"></div>
-<div class="field"><label>Case No.</label><input id="caseNo" type="text" required></div>
-<div class="field"><label>Court</label><input id="court" type="text" required></div>
-<div class="field"><label>Party Name</label><input id="party" type="text" required></div>
-<div class="field"><label>Position / Stage</label><input id="stage" type="text" required></div>
+<div id="modal"><div class="modal-card">
+<h2 id="modalTitle">Add New Case</h2>
+<form id="form"><div class="grid">
+<div class="field"><label>Previous Date</label><input id="prevDate" type="date"></div>
+<div class="field"><label>Next Date</label><input id="nextDate" type="date" required></div>
+<div class="field"><label>Case No.</label><input id="caseNo" required></div>
+<div class="field"><label>Court</label><input id="court" required></div>
+<div class="field"><label>Party Name</label><input id="party" required></div>
+<div class="field"><label>Position / Stage</label><input id="stage" required></div>
 </div>
-<div class="modal-actions"><button type="button" class="secondary" id="cancel">Cancel</button><button type="submit">Save Case</button></div>
-</form>
-</div>
-</div>
+<div class="modal-actions"><button type="button" class="secondary" id="cancel">Cancel</button><button type="submit">Save</button></div>
+</form></div></div>
 
 <script>
-const KEY="case_diary_cases_v1";
-let cases=JSON.parse(localStorage.getItem(KEY)||"[]");
-let selected=new Date();
-selected.setHours(0,0,0,0);
+const KEY="case_diary_cases_v2";
+let cases=loadCases();
+let selected=new Date(); selected.setHours(0,0,0,0);
+let editingId=null;
 
-const $=id=>document.getElementById(id);
-const iso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return y+"-"+m+"-"+day};
-const save=()=>localStorage.setItem(KEY,JSON.stringify(cases));
-const format=d=>new Intl.DateTimeFormat("en-IN",{day:"2-digit",month:"short",year:"numeric"}).format(d);
+function loadCases(){
+  let raw;
+  try{raw=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){raw=null}
+  if(Array.isArray(raw)) return raw;
+  let old=[];
+  try{old=JSON.parse(localStorage.getItem("case_diary_cases_v1")||"[]")}catch(e){}
+  return old.map(c=>({
+    id:c.id,caseNo:c.caseNo||"",court:c.court||"",party:c.party||"",stage:c.stage||"",
+    history:[{previousDate:c.previousDate||"",nextDate:c.nextDate||"",stage:c.stage||""}]
+  }));
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(cases))}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function fmt(s){if(!s)return"—";return new Intl.DateTimeFormat("en-IN",{day:"2-digit",month:"short",year:"numeric"}).format(new Date(s+"T00:00:00"))}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 
+function latest(c){return c.history[c.history.length-1]||{}}
 function render(){
- const key=iso(selected);
- $("datePicker").value=key;
- $("dateLabel").textContent=format(selected);
- const rows=$("rows");
- const list=cases.filter(c=>c.previousDate===key || c.nextDate===key);
- rows.innerHTML="";
- if(!list.length){
-   rows.innerHTML='<tr><td colspan="7" class="empty">No cases for this date.</td></tr>';
-   return;
- }
- list.forEach(c=>{
-   const tr=document.createElement("tr");
-   tr.innerHTML=
-     "<td>"+(c.previousDate?format(new Date(c.previousDate+"T00:00:00")):"—")+"</td>"+
-     "<td><strong>"+esc(c.caseNo)+"</strong></td>"+
-     "<td>"+esc(c.court)+"</td>"+
-     "<td>"+esc(c.party)+"</td>"+
-     "<td>"+esc(c.stage)+"</td>"+
-     "<td>"+(c.nextDate?format(new Date(c.nextDate+"T00:00:00")):"—")+"</td>"+
-     '<td><div class="actions"><button class="danger small" data-id="'+c.id+'">Remove</button></div></td>';
-   rows.appendChild(tr);
- });
- rows.querySelectorAll("button[data-id]").forEach(b=>b.onclick=()=>removeCase(b.dataset.id));
+  const key=iso(selected);
+  picker.value=key; label.textContent=fmt(key);
+  rows.innerHTML="";
+  const list=[];
+  cases.forEach(c=>{
+    c.history.forEach((h,i)=>{
+      if(h.nextDate===key || (h.previousDate===key && i===c.history.length-1)){
+        list.push({c,h,i});
+      }
+    });
+  });
+  if(!list.length){rows.innerHTML='<tr><td colspan="7" class="empty">No cases for this date.</td></tr>';return}
+  list.forEach(({c,h,i})=>{
+    const tr=document.createElement("tr");
+    const current=i===c.history.length-1;
+    tr.innerHTML="<td>"+fmt(h.previousDate)+"</td><td><strong>"+esc(c.caseNo)+"</strong></td><td>"+esc(c.court)+
+      "</td><td>"+esc(c.party)+"</td><td>"+esc(h.stage||c.stage)+"</td><td>"+fmt(h.nextDate)+
+      "</td><td><div class='actions'>"+
+      (current?'<button class="small" data-update="'+esc(c.id)+'">Set New Date</button>':'')+
+      "<button class='danger small' data-remove='"+esc(c.id)+"'>Remove</button></div></td>";
+    rows.appendChild(tr);
+  });
+  document.querySelectorAll("[data-update]").forEach(b=>b.onclick=()=>openUpdate(b.dataset.update));
+  document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>removeCase(b.dataset.remove));
 }
-function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
-function openModal(){ $("caseForm").reset(); $("previousDate").value=iso(selected); $("modal").style.display="flex"; $("caseNo").focus(); }
-function closeModal(){ $("modal").style.display="none"; }
+
+function openAdd(){
+  editingId=null; modalTitle.textContent="Add New Case"; form.reset();
+  prevDate.value=iso(selected); modal.style.display="flex"; caseNo.focus();
+}
+function openUpdate(id){
+  const c=cases.find(x=>x.id===id); if(!c)return;
+  editingId=id; modalTitle.textContent="Set New Date";
+  form.reset(); prevDate.value=iso(selected); nextDate.value=""; caseNo.value=c.caseNo;
+  court.value=c.court; party.value=c.party; stage.value=latest(c).stage||c.stage;
+  caseNo.readOnly=court.readOnly=party.readOnly=true;
+  modal.style.display="flex"; nextDate.focus();
+}
+function closeModal(){
+  modal.style.display="none"; caseNo.readOnly=court.readOnly=party.readOnly=false; editingId=null;
+}
 function removeCase(id){
- const c=cases.find(x=>x.id===id);
- if(!c)return;
- if(confirm("Remove case "+c.caseNo+" from the diary?")){
-   cases=cases.filter(x=>x.id!==id); save(); render();
- }
+  const c=cases.find(x=>x.id===id); if(!c)return;
+  if(confirm("Remove case "+c.caseNo+" and its hearing history?")){cases=cases.filter(x=>x.id!==id);save();render()}
 }
-$("addTop").onclick=openModal;
-$("cancel").onclick=closeModal;
-$("modal").onclick=e=>{if(e.target===$("modal"))closeModal()};
-$("prev").onclick=()=>{selected.setDate(selected.getDate()-1);render()};
-$("next").onclick=()=>{selected.setDate(selected.getDate()+1);render()};
-$("today").onclick=()=>{selected=new Date();selected.setHours(0,0,0,0);render()};
-$("datePicker").onchange=e=>{selected=new Date(e.target.value+"T00:00:00");render()};
-$("caseForm").onsubmit=e=>{
- e.preventDefault();
- cases.push({
-   id:Date.now().toString(36)+Math.random().toString(36).slice(2),
-   previousDate:$("previousDate").value,
-   caseNo:$("caseNo").value.trim(),
-   court:$("court").value.trim(),
-   party:$("party").value.trim(),
-   stage:$("stage").value.trim(),
-   nextDate:$("nextDate").value
- });
- save(); closeModal(); render();
+
+addBtn.onclick=openAdd; cancel.onclick=closeModal;
+modal.onclick=e=>{if(e.target===modal)closeModal()};
+prev.onclick=()=>{selected.setDate(selected.getDate()-1);render()};
+next.onclick=()=>{selected.setDate(selected.getDate()+1);render()};
+today.onclick=()=>{selected=new Date();selected.setHours(0,0,0,0);render()};
+picker.onchange=e=>{selected=new Date(e.target.value+"T00:00:00");render()};
+
+form.onsubmit=e=>{
+  e.preventDefault();
+  if(editingId){
+    const c=cases.find(x=>x.id===editingId);
+    const last=latest(c);
+    if(last.nextDate===nextDate.value){alert("Choose a new date.");return}
+    c.history.push({previousDate:prevDate.value,nextDate:nextDate.value,stage:stage.value.trim()});
+    c.stage=stage.value.trim();
+  }else{
+    cases.push({
+      id:Date.now().toString(36)+Math.random().toString(36).slice(2),
+      caseNo:caseNo.value.trim(),court:court.value.trim(),party:party.value.trim(),stage:stage.value.trim(),
+      history:[{previousDate:prevDate.value,nextDate:nextDate.value,stage:stage.value.trim()}]
+    });
+  }
+  save();closeModal();render();
 };
 render();
 </script>
-</body>
-</html>
+</body></html>
